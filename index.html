@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flujo Maximo</title>
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body onload="main()">
+    <div class="principal">
+      <h1>FLUJO MAXIMO</h1>
+      <div class="botones">
+        <div class="contenedor_boton">
+          <button onclick="setAccion('editar');">Editar</button>
+        </div>
+        <div class="contenedor_boton">
+          <button onclick="setAccion('crearNodo');">Crear nodo</button>
+        </div>
+        <div class="contenedor_boton">
+          <button onclick="setAccion('eliminarNodo');">Eliminar nodo</button>
+        </div>
+        <div class="contenedor_boton">
+          <button onclick="setAccion('crearEnlace');">Crear enlace</button>
+        </div>
+        <div class="contenedor_boton">
+          <button onclick="setAccion('eliminarEnlace');">
+            Eliminar enlace
+          </button>
+        </div>
+        <div class="contenedor_boton">
+          <button onclick="setAccion('calcular');">Calcular</button>
+        </div>
+      </div>
+      <div class="botones botones_pasos">
+        <div class="contenedor_boton">
+          <button onclick="setAccion('mostrarPasos');">Paso inicial</button>
+        </div>
+        <p class="titulo_pasos">NO HAY CALCULO PREVIO</p>
+
+        <div class="contenedor_salto_pasos">
+            <div class="contenedor_boton">
+                <button onclick="setAccion('pasoAnterior');">Anterior</button>
+              </div>
+              <div class="contenedor_boton">
+                <button onclick="setAccion('pasoSiguiente');">Siguiente</button>
+              </div>
+        </div>
+      </div>
+      <div class="explicacion_paso" >
+        <p class="ruta"></p>
+        <p class="minimo"></p>
+    </div>
+      <canvas id="canvas"> </canvas>
+      
+    </div>
+    
+    </div>
+    <div class="contenedor_ventana ocultar_inicial contenedor_crear_enlace">
+        <div class="ventana">
+          <div class="barra">
+            <span>Crear enlace</span>
+            <div class="cerrar">X</div>
+          </div>
+          <div class="contenido">
+            <p class="titulo1"></p>
+            <input type="text" id="peso1" value="0" />
+            <p class="separacion"><--------></p>
+            <p class="titulo2"></p>
+            <input type="text" id="peso2" value="0" />
+            <div class="contenedor_boton_ventana">
+              <button onclick="crearEnlaceVentana();ocultarContenedores();">Aceptar</button>
+            </div>
+          </div>
+        </div>
+    <script src="fabric.min.js"></script>
+    <script src="/js/Graficos.js"></script>
+    <script src="/js/Eventos.js"></script>
+    <script src="/js/Main.js"></script>
+    <script src="/js/FuncionesGenerales.js"></script>
+    <script src="/js/Enlace.js"></script>
+    <script src="/js/Nodo.js"></script>
+    <script src="/js/GestorNodos.js"></script>
+    <script src="/js/FlujoMaximo.js"></script>
+
+    <script>
+      const cuadros_cerrar = document.querySelectorAll(".cerrar");
+      const contenedores_ventana = document.querySelectorAll(
+        ".contenedor_ventana"
+      );
+
+      const ventanas = document.querySelectorAll(".ventana");
+
+      for (let cuadro_cerrar of cuadros_cerrar) {
+        cuadro_cerrar.addEventListener("click", () => {
+          ocultarContenedores();
+        });
+      }
+      for (let contenedor_ventana of contenedores_ventana) {
+        contenedor_ventana.addEventListener("click", () => {
+          ocultarContenedores();
+        });
+      }
+      for (let ventana of ventanas) {
+        ventana.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+      }
+
+      function ocultarContenedores() {
+        for (let contenedor_ventana of contenedores_ventana) {
+          contenedor_ventana.classList.add("ocultar");
+          contenedor_ventana.classList.remove("mostrar");
+          GESTOR_NODOS.resetearNodos();
+          CANVAS.discardActiveObject().renderAll();
+
+          //   if(NODOS_SELECCIONADOS.length>1){
+          //     GESTOR_NODOS.crearEnlace(NODOS_SELECCIONADOS[0],NODOS_SELECCIONADOS[1]);
+
+          //   }
+        }
+      }
+    </script>
+    <script>
+      const contenedor_crear_enlace = document.querySelector(
+        ".contenedor_crear_enlace"
+      );
+
+      function mostrarVentanaCrearEnlace(nodo1, nodo2) {
+        contenedor_crear_enlace.classList.remove("ocultar");
+        contenedor_crear_enlace.classList.remove("ocultar_inicial");
+        contenedor_crear_enlace.classList.add("mostrar");
+        let titulo1 = document.querySelector(".titulo1");
+        titulo1.innerHTML = "Nodo " + nodo1.getNombre() + " : Peso";
+        let titulo2 = document.querySelector(".titulo2");
+        titulo2.innerHTML = "Nodo " + nodo2.getNombre() + " : Peso";
+      }
+    </script>
+  </body>
+</html>
